@@ -3,12 +3,12 @@ module "ec2-instance" {
   ami                    = data.aws_ami.centos8.id
   name                   = "workstation"
   instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.allow_tls.id]
+  vpc_security_group_ids = [aws_security_group.allow_minikube.id]
   subnet_id              = "subnet-01c1c823852d19a68"
   user_data              = file("docker.sh")
 
   tags = {
-    Terraform = "true"
+    Terraform   = "true"
     Envieonment = "dev"
   }
 }
@@ -23,8 +23,8 @@ resource "aws_security_group" "allow_minikube" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-    }
-    
+  }
+
   # egress is always same for sg, so we are keeping it here as static
   egress {
     from_port   = 0
@@ -34,8 +34,8 @@ resource "aws_security_group" "allow_minikube" {
   }
 
   tags = {
-      Name = "workstation-sg"
-    }
+    Name = "workstation-sg"
+  }
 }
 
 
